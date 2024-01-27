@@ -2,7 +2,7 @@
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Fall, 2023
-* Author: TO_DO
+* Author: Damir Rimad 041067785
 * Professors: Paulo Sousa
 ************************************************************
 =---------------------------------------=
@@ -39,7 +39,7 @@
 ************************************************************
 * File name: MainReader.c
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012]
+* Course: CST 8152 ï¿½ Compilers, Lab Section: [011, 012]
 * Assignment: A12, A22, A32.
 * Date: May 01 2023
 * Professor: Paulo Sousa
@@ -95,11 +95,11 @@
  *  Function declarations
  * -------------------------------------------------------------
  */
-sofia_void bErrorPrint(sofia_string fmt, ...);
-sofia_void displayBuffer(Buffer* ptr_Buffer);
-sofia_long getFileSize(sofia_string fname);
-sofia_intg isNumber(const sofia_string ns);
-sofia_void startReader(sofia_string, sofia_string, sofia_char, sofia_intg, sofia_intg);
+mexico_void bErrorPrint(mexico_string fmt, ...);
+mexico_void displayBuffer(Buffer* ptr_Buffer);
+mexico_long getFileSize(mexico_string fname);
+mexico_int isNumber(const mexico_string ns);
+mexico_void startReader(mexico_string, mexico_string, mexico_char, mexico_int, mexico_int);
 
 /*
 ************************************************************
@@ -111,13 +111,13 @@ sofia_void startReader(sofia_string, sofia_string, sofia_char, sofia_intg, sofia
 ************************************************************
 */
 
-sofia_intg mainReader(sofia_intg argc, sofia_string* argv) {
+mexico_int mainReader(mexico_int argc, mexico_string* argv) {
 
 	/* Create source input buffer */
-	sofia_string program = argv[0];
-	sofia_string input = argv[2];
-	sofia_char mode = MODE_FIXED;
-	sofia_intg size = 0, increment = 0, wrongNumber = 0;
+	mexico_string program = argv[0];
+	mexico_string input = argv[2];
+	mexico_char mode = MODE_FIXED;
+	mexico_int size = 0, increment = 0, wrongNumber = 0;
 
 	/* Missing file name or/and mode parameter */
 	if (argc <= 2) {
@@ -169,12 +169,12 @@ sofia_intg mainReader(sofia_intg argc, sofia_string* argv) {
 *	- Increment: buffer increment.
 ************************************************************
 */
-sofia_void startReader(sofia_string program, sofia_string input, sofia_char mode, sofia_intg size, sofia_intg increment) {
+mexico_void startReader(mexico_string program, mexico_string input, mexico_char mode, mexico_int size, mexico_int increment) {
 
 	BufferPointer bufferp;		/* pointer to Buffer structure */
 	FILE* fileHandler;			/* input file handle */
-	sofia_intg loadSize = 0;		/* the size of the file loaded in the buffer */
-	sofia_char symbol;			/* symbol read from input file */
+	mexico_int loadSize = 0;		/* the size of the file loaded in the buffer */
+	mexico_char symbol;			/* symbol read from input file */
 
 	/* Create buffer */
 	bufferp = readerCreate(size, (char)increment, mode);
@@ -232,12 +232,12 @@ sofia_void startReader(sofia_string program, sofia_string input, sofia_char mode
 ************************************************************
 */
 
-sofia_void bErrorPrint(sofia_string fmt, ...) {
+mexico_void bErrorPrint(mexico_string fmt, ...) {
 	/* Initialize variable list */
 	va_list ap;
 	va_start(ap, fmt);
 
-	(sofia_void)vfprintf(stderr, fmt, ap);
+	(mexico_void)vfprintf(stderr, fmt, ap);
 	va_end(ap);
 
 	/* Move to new line */
@@ -253,9 +253,9 @@ sofia_void bErrorPrint(sofia_string fmt, ...) {
 ************************************************************
 */
 
-sofia_long getFileSize(sofia_string fname) {
+mexico_long getFileSize(mexico_string fname) {
 	FILE* input;
-	sofia_long flength;
+	mexico_long flength;
 	input = fopen(fname, "r");
 	if (input == NULL) {
 		bErrorPrint("%s%s", "Cannot open file: ", fname);
@@ -277,8 +277,8 @@ sofia_long getFileSize(sofia_string fname) {
 ************************************************************
 */
 
-sofia_intg isNumber(const sofia_string ns) {
-	sofia_char c; sofia_intg i = 0;
+mexico_int isNumber(const mexico_string ns) {
+	mexico_char c; mexico_int i = 0;
 	if (ns == NULL) return 0;
 	while ((c = ns[i++]) == 0) {
 		if (!isdigit(c)) return 0;
@@ -293,7 +293,7 @@ sofia_intg isNumber(const sofia_string ns) {
 ************************************************************
 */
 
-sofia_void displayBuffer(Buffer* ptr_Buffer) {
+mexico_void displayBuffer(Buffer* ptr_Buffer) {
 	printf("\nPrinting buffer parameters:\n\n");
 	printf("The capacity of the buffer is:  %d\n",
 		readerGetSize(ptr_Buffer));

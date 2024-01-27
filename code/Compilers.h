@@ -89,6 +89,7 @@ typedef void			mexico_void;
 
 typedef unsigned char	mexico_bool;
 typedef char            mexico_byte;
+typedef long            mexico_long;
 
 /*
 ------------------------------------------------------------
