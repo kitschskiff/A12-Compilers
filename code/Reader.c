@@ -2,7 +2,7 @@
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Fall, 2023
-* Author: TODO
+* Author: Damir Rimad 041067785
 * Professors: Paulo Sousa
 ************************************************************
 =---------------------------------------=
@@ -86,18 +86,38 @@
 */
 
 BufferPointer readerCreate(mexico_int size, mexico_int increment, mexico_int mode) {
-	BufferPointer readerPointer;
-	/* TODO: Defensive programming */
-	/* TODO: Adjust the values according to parameters */
-	readerPointer = (BufferPointer)calloc(1, sizeof(Buffer));
-	if (!readerPointer)
-		return NULL;
-	readerPointer->content = (mexico_string)malloc(size);
+    BufferPointer readerPointer;
+    /* TODO: Defensive programming */
+    /* TODO: Adjust the values according to parameters */
+    // initialize in memory
+    readerPointer = (BufferPointer) calloc(1, sizeof(Buffer));
+    if (!readerPointer)     // if allocation fails.
+        goto clean;
+    readerPointer->content = (mexico_string) malloc(size);
+    if (!readerPointer->content) {// malloc fail check
+        // free memory
+        goto clean;
+    }
 	/* TODO: Defensive programming */
 	/* TODO: Initialize the histogram */
-	readerPointer->size = size;
-	readerPointer->increment = increment;
-	readerPointer->mode = mode;
+    // assigning parameters
+    if(size>0)      // assign size argument
+        readerPointer->size = size;
+    else            // zero or less argument, assign default size
+	    readerPointer->size = READER_DEFAULT_SIZE;
+    if(increment>=0) {
+        readerPointer->increment = increment;
+        // check if mode is valid
+        if(mode != MODE_ADDIT | mode != MODE_MULTI) {   // mode should not be fixed when provided increment
+            goto clean;
+        }
+        readerPointer->mode = mode;
+    } else         // if increment is not provided, mode is always fixed.
+        readerPointer->mode = MODE_FIXED;
+
+    // flags
+    readerPointer->flags = READER_DEFAULT_FLAG;    // default flag
+
 	/* TODO: Initialize flags */
 	/* TODO: The created flag must be signalized as EMP */
 	/* NEW: Cleaning the content */
@@ -107,6 +127,16 @@ BufferPointer readerCreate(mexico_int size, mexico_int increment, mexico_int mod
 	readerPointer->position.mark = 0;
 	readerPointer->position.read = 0;
 	return readerPointer;
+
+    //-------------------------------
+
+    clean: // cleanup on fail-case
+    if(readerPointer)
+        free(readerPointer->content);
+    if(readerPointer)
+        free(readerPointer);
+
+    return NULL;
 }
 
 
@@ -177,8 +207,11 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, mexico_char ch) {
 mexico_bool readerClear(BufferPointer const readerPointer) {
 	/* TODO: Defensive programming */
 	/* TODO: Adjust flags original */
+
+    readerPointer->flags = 0x00;        // reset flags
+
 	readerPointer->position.wrte = readerPointer->position.mark = readerPointer->position.read = 0;
-	return SOFIA_TRUE;
+	return MEXICO_TRUE;
 }
 
 /*
@@ -198,7 +231,8 @@ mexico_bool readerClear(BufferPointer const readerPointer) {
 mexico_bool readerFree(BufferPointer const readerPointer) {
 	/* TODO: Defensive programming */
 	/* TODO: Free pointers */
-	return SOFIA_TRUE;
+
+	return MEXICO_TRUE;
 }
 
 /*
@@ -218,7 +252,12 @@ mexico_bool readerFree(BufferPointer const readerPointer) {
 mexico_bool readerIsFull(BufferPointer const readerPointer) {
 	/* TODO: Defensive programming */
 	/* TODO: Check flag if buffer is FUL */
-	return SOFIA_FALSE;
+    Position* position = &readerPointer->position;
+    if(position->wrte>=readerPointer->size) {
+
+    }
+
+	return MEXICO_FALSE;
 }
 
 
@@ -239,7 +278,7 @@ mexico_bool readerIsFull(BufferPointer const readerPointer) {
 mexico_bool readerIsEmpty(BufferPointer const readerPointer) {
 	/* TODO: Defensive programming */
 	/* TODO: Check flag if buffer is EMP */
-	return SOFIA_FALSE;
+	return MEXICO_FALSE;
 }
 
 /*
@@ -261,7 +300,7 @@ mexico_bool readerSetMark(BufferPointer const readerPointer, mexico_int mark) {
 	/* TODO: Defensive programming */
 	/* TODO: Adjust mark */
 	readerPointer->position.mark = mark;
-	return SOFIA_TRUE;
+	return MEXICO_TRUE;
 }
 
 
@@ -345,7 +384,7 @@ mexico_bool readerRecover(BufferPointer const readerPointer) {
 	/* TODO: Defensive programming */
 	/* TODO: Recover positions */
 	readerPointer->position.read = 0;
-	return SOFIA_TRUE;
+	return MEXICO_TRUE;
 }
 
 
@@ -366,7 +405,7 @@ mexico_bool readerRecover(BufferPointer const readerPointer) {
 mexico_bool readerRetract(BufferPointer const readerPointer) {
 	/* TODO: Defensive programming */
 	/* TODO: Retract (return 1 pos read) */
-	return SOFIA_TRUE;
+	return MEXICO_TRUE;
 }
 
 
@@ -388,7 +427,7 @@ mexico_bool readerRestore(BufferPointer const readerPointer) {
 	/* TODO: Defensive programming */
 	/* TODO: Restore positions (read/mark) */
 	readerPointer->position.read = readerPointer->position.mark;
-	return SOFIA_TRUE;
+	return MEXICO_TRUE;
 }
 
 

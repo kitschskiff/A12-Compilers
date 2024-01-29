@@ -68,8 +68,8 @@
 #define STR_LANGNAME    "Mexico"
 
 /* Logical constants - adapt for your language */
-#define SOFIA_TRUE  1
-#define SOFIA_FALSE 0
+#define MEXICO_TRUE  1
+#define MEXICO_FALSE 0
 
 /*
 ------------------------------------------------------------
