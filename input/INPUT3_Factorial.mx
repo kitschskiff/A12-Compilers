@@ -1,0 +1,16 @@
+-* Mexico Example 4:
+  Testing numbers (ex: factorial) *-
+function void main()
+	int i, n, f;
+	
+	f=1;
+	i=1;
+	print("Write a number:");
+	readInt(n);
+	while(i<n) do
+		f = f * i;
+		i = i + 1;
+	end
+	print("Factorial");
+	print(f);
+end

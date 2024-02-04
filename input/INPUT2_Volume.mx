@@ -1,0 +1,10 @@
+-* Mexico Example 3:
+  Volume of a sphere *-
+function void main()
+	double pi, r, vol;
+	
+	pi = 3.14;
+	r = readDouble();
+	vol = <double>4 / 3 * pi * (r * r * r);
+	print(vol);
+end
