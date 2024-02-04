@@ -72,9 +72,9 @@ BufferPointer readerCreate(mexico_int size, mexico_int increment, mexico_int mod
         readerFree(readerPointer);
         return NULL;
     }
-    if(size<0)
+    if(size<=0)
         size=READER_DEFAULT_SIZE;
-    if(increment<0)
+    if(increment<=0)
         increment=READER_DEFAULT_INCREMENT;
     readerPointer->content = (mexico_string) malloc(size);
     if (!readerPointer->content) { /* malloc fail check */
@@ -161,7 +161,7 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, mexico_char ch) {
             readerPointer->flags|=READER_FUL;       /* set FUL flag */
             return NULL;
         }
-        tempBuffer = realloc(
+        tempBuffer = realloc(                       /* Re-allocation of buffer */
                 readerPointer->content,
                 newSize);
         if(tempBuffer==NULL)                        /* check if allocation failed */
@@ -712,21 +712,23 @@ mexico_void readerPrintStat(BufferPointer const readerPointer) {
         if(i<33)
             switch(i) {
                 case(0):
-                    printf("ASCII NUL appears %d times\n", readerPointer->histogram[i]);
+                    printf("[NUL] appears %d times", readerPointer->histogram[i]);
                     break;
                 case (10):
-                    printf("ASCII LF appears %d times\n", readerPointer->histogram[i]);
+                    printf("[LF] appears %d times", readerPointer->histogram[i]);
                     break;
                 case (32):
-                    printf("ASCII SPACE appears %d times\n", readerPointer->histogram[i]);
+                    printf("[SPACE] appears %d times", readerPointer->histogram[i]);
                     break;
                 default:
-                    printf("ASCII %d appears %d times\n", i, readerPointer->histogram[i]);
+                    printf("[%d] appears %d times", i, readerPointer->histogram[i]);
             }
         else if(i==127)
-            printf("ASCII DEL appears %d times\n", readerPointer->histogram[i]);
+            printf("[DEL] appears %d times", readerPointer->histogram[i]);
         else
-            printf("ASCII %c appears %d times\n", i, readerPointer->histogram[i]);
+            printf("[%c] appears %d times", i, readerPointer->histogram[i]);
+        if(i+1<NCHAR)
+            printf(" |--| ");
     }
 }
 

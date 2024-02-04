@@ -123,8 +123,6 @@ mexico_int main(int argc, char** argv) {
 *************************************************************
 */
 
-/* TODO: Update your logo with your own language message */
-
 mexico_void printLogo() {
 	printf("%s%s%s%s%s%s%s",
 		"\t_________ ________      _____  ____  ___\n",
