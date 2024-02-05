@@ -260,6 +260,7 @@ mexico_bool readerIsFull(BufferPointer const readerPointer) {
     /* Check if buffer is full if wrte exceeds or equals size */
     Position* position = &readerPointer->position;
     if(position->wrte>=readerPointer->size) {
+        readerPointer->flags|=READER_FUL;   // set ful flag
         return MEXICO_TRUE;
     }
 
@@ -288,6 +289,11 @@ mexico_bool readerIsEmpty(BufferPointer const readerPointer) {
 	/* Check flag if buffer is EMP */
     if((readerPointer->flags&READER_EMP)==READER_EMP)
         return MEXICO_TRUE;
+
+    if(readerPointer->position.wrte==0) {
+        readerPointer->flags|=READER_EMP;       // set empty flag
+        return MEXICO_TRUE;
+    }
 
 	return MEXICO_FALSE;
 }
@@ -388,6 +394,8 @@ mexico_int readerLoad(BufferPointer const readerPointer, FILE* const fileDescrip
 		c = (char)fgetc(fileDescriptor);
 		size++;
 	}
+    if(size>0)
+        readerPointer->flags&=~READER_EMP;      // RST emp flag
 	return size;
 }
 
@@ -413,6 +421,7 @@ mexico_bool readerRecover(BufferPointer const readerPointer) {
 	/* Recover positions */
 	readerPointer->position.read = 0;
 	readerPointer->position.mark = 0;
+
     return MEXICO_TRUE;
 }
 
@@ -494,7 +503,7 @@ mexico_char readerGetChar(BufferPointer const readerPointer) {
         return READER_TERMINATOR;
     }
     c=readerPointer->content[readerPointer->position.read++];       /* get character */
-    readerPointer->flags &= !READER_END;
+    readerPointer->flags &= !READER_END;        // RST end flag
 
 	return c;
 }
@@ -524,7 +533,7 @@ mexico_string readerGetContent(BufferPointer const readerPointer, mexico_int pos
         return MEXICO_FALSE;
     }
 	/* Return content (string) */
-	return readerPointer->content + pos;;
+	return readerPointer->content + pos;
 }
 
 
